@@ -1,8 +1,8 @@
 # MooseFS High Availability Cluster with Keepalived
 
 [![MooseFS](https://img.shields.io/badge/MooseFS-4.0+-blue.svg)](https://moosefs.com/)
-[![Keepalived](https://img.shields.io/badge/Keepalived-2.3+-green.svg)](https://www.keepalived.org/)
-[![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+[![Keepalived](https://img.shields.io/badge/Keepalived-2.3+-green.svg)]([https://www.keepalived.org/](https://keepalived.readthedocs.io/))
+
 
 ## Description
 
