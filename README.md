@@ -51,6 +51,37 @@ Ce guide décrit la mise en place d'un cluster MooseFS hautement disponible avec
 
 ---
 
+## 🏗️ Architecture
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│                    IP Virtuelle (VIP)                       │
+│                    192.168.25.230                           │
+└─────────────────────────────────────────────────────────────┘
+                            │
+         ┌──────────────────┼──────────────────┐
+         │                  │                  │
+    ┌────▼────┐        ┌────▼────┐       ┌────▼────┐
+    │  NODE1  │        │  NODE2  │       │  NODE3  │
+    │ Master  │        │ Backup  │       │ Backup  │
+    │Priority │        │Priority │       │Priority │
+    │  103    │        │  102    │       │  101    │
+    └─────────┘        └─────────┘       └─────────┘
+    192.168.25.200     192.168.25.210    192.168.25.220
+```
+
+### Composants par nœud
+
+| Service | NODE1 | NODE2 | NODE3 | Description |
+|---------|-------|-------|-------|-------------|
+| **moosefs-master** | ✅ (actif) | ⏸️ (standby) | ⏸️ (standby) | Géré par Keepalived |
+| **moosefs-chunkserver** | ✅ | ✅ | ✅ | Stockage des données |
+| **moosefs-cgiserv** | ✅ | ✅ | ✅ | Interface web |
+| **keepalived** | ✅ | ✅ | ✅ | Gestion HA |
+| **mtd-rsync** | ✅ | ✅ | ✅ | Synchronisation métadonnées |
+
+---
+
 ## Prérequis
 
 ### Configuration réseau
@@ -1022,6 +1053,14 @@ sudo systemctl stop keepalived
 # 2. Arrêter tous les masters sauf NODE1
 sudo systemctl stop moosefs-master
 ```
+
+---
+
+## Limitations / Dislamer
+
+- Cette solution n'est pas officillement supportée par MooseFS
+- Cette documentation peut-etre utiliser pour de la production avec précotion
+- Cette solution a était testé sur 3 machine Promox 9.1.4 mise en cluster sur le même réseau 
 
 ---
 
