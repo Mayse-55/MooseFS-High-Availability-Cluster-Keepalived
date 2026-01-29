@@ -77,6 +77,7 @@ Ce guide décrit la mise en place d'un cluster MooseFS hautement disponible avec
 | Service | NODE1 | NODE2 | NODE3 | Description |
 |---------|-------|-------|-------|-------------|
 | **moosefs-master** | ✅ (actif) | ⏸️ (standby) | ⏸️ (standby) | Géré par Keepalived |
+| **moosefs-metalogger** | ❌ (Stop)| ❌ (Stop) | ❌ (Stop) | Métadonnée |  
 | **moosefs-chunkserver** | ✅ | ✅ | ✅ | Stockage des données |
 | **moosefs-cgiserv** | ✅ | ✅ | ✅ | Interface web |
 | **keepalived** | ✅ | ✅ | ✅ | Gestion HA |
