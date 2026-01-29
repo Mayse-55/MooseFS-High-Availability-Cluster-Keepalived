@@ -4,7 +4,7 @@
 [![Keepalived](https://img.shields.io/badge/Keepalived-2.3+-green.svg)](https://www.keepalived.org/)
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
-## 🎯 Description
+## Description
 
 MooseFS est un système de fichiers distribué tolérant aux pannes qui permet de créer un pool de stockage unifié à partir de plusieurs serveurs. Cette configuration implémente une architecture à 3 nœuds maîtres avec :
 
@@ -22,7 +22,7 @@ MooseFS est un système de fichiers distribué tolérant aux pannes qui permet d
 - Systèmes de fichiers partagés pour environnements de développement/production
 - Archives de données avec redondance
 
-## 📋 Table des matières
+## Table des matières
 
 - [Vue d'ensemble](#vue-densemble)
 - [Prérequis](#prérequis)
@@ -37,7 +37,7 @@ MooseFS est un système de fichiers distribué tolérant aux pannes qui permet d
 
 ---
 
-## 🎯 Vue d'ensemble
+## Vue d'ensemble
 
 Ce guide décrit la mise en place d'un cluster MooseFS hautement disponible avec 3 nœuds maîtres utilisant Keepalived pour la gestion automatique du basculement (failover).
 
@@ -51,7 +51,7 @@ Ce guide décrit la mise en place d'un cluster MooseFS hautement disponible avec
 
 ---
 
-## 📦 Prérequis
+## Prérequis
 
 ### Configuration réseau
 
@@ -72,11 +72,9 @@ Ce guide décrit la mise en place d'un cluster MooseFS hautement disponible avec
 
 ---
 
-## 🚀 Installation de base
+## Installation de base
 
 ### Les étapes suivantes sont à effectuer sur **NODE1, NODE2 ET NODE3**
-
----
 
 ### 1. Extension de la partition root (optionnel)
 
@@ -278,9 +276,9 @@ mfsmaster:/  /mnt/local-mpx/moosefs_data  moosefs  defaults,mfsdelayedinit,_netd
 
 ---
 
-## ⚙️ Configuration par nœud
+## Configuration par nœud
 
-### 📌 Configuration spécifique à NODE1
+### Configuration spécifique à NODE1
 
 #### Initialisation des métadonnées (**UNIQUEMENT sur NODE1**)
 
@@ -302,7 +300,13 @@ ssh-copy-id root@192.168.25.210
 ssh-copy-id root@192.168.25.220
 ```
 
-#### Script de synchronisation rsync
+#### Script de synchronisation rsync sur les 3 noeuds
+
+### Packet à installer pour vérifier en temp réel :
+
+```bash
+apt install inotify-tools
+````
 
 ```bash
 sudo mkdir -p /etc/script
@@ -335,9 +339,17 @@ EOF
 chmod +x /etc/script/mtd-rsync.sh
 ```
 
+### Modifié L'ip par rapport au noeud :
+
+```bash
+SRC="/var/lib/mfs"
+DEST1="root@votreip:/var/lib/mfs"
+DEST2="root@votreip:/var/lib/mfs"
+```
+
 ---
 
-### 📌 Configuration spécifique à NODE2
+### Configuration spécifique à NODE2
 
 #### Configuration SSH sans mot de passe
 
@@ -396,7 +408,7 @@ chmod +x /etc/script/mtd-rsync.sh
 
 ---
 
-### 📌 Configuration spécifique à NODE3
+### Configuration spécifique à NODE3
 
 #### Configuration SSH sans mot de passe
 
@@ -455,7 +467,7 @@ chmod +x /etc/script/mtd-rsync.sh
 
 ---
 
-## 🔄 Service de synchronisation automatique
+## Service de synchronisation automatique
 
 ### À effectuer sur NODE1, NODE2 ET NODE3
 
@@ -485,7 +497,7 @@ sudo systemctl enable mtd-rsync.service
 
 ---
 
-## 🛡️ Configuration Keepalived
+## Configuration Keepalived
 
 ### Scripts de transition (sur les 3 nœuds)
 
@@ -581,7 +593,7 @@ vrrp_instance VI_MOOSEFS {
 EOF
 ```
 
-> **⚠️ Important** : Remplacez `vmbr0` par votre interface réseau réelle (vérifiez avec `ip a`)
+> **Important** : Remplacez `vmbr0` par votre interface réseau réelle (vérifiez avec `ip a`)
 
 ---
 
@@ -630,7 +642,7 @@ vrrp_instance VI_MOOSEFS {
 EOF
 ```
 
-> **⚠️ Important** : Remplacez `vmbr0` par votre interface réseau réelle
+> **Important** : Remplacez `vmbr0` par votre interface réseau réelle
 
 ---
 
@@ -679,11 +691,11 @@ vrrp_instance VI_MOOSEFS {
 EOF
 ```
 
-> **⚠️ Important** : Remplacez `vmbr0` par votre interface réseau réelle
+> **Important** : Remplacez `vmbr0` par votre interface réseau réelle
 
 ---
 
-## 🎬 Démarrage du cluster
+## Démarrage du cluster
 
 ### 🔴 Sur NODE1 (Master principal)
 
@@ -805,7 +817,7 @@ mfscli -SCS
 
 ```bash
 # Sur NODE1
-sudo systemctl stop moosefs-master
+sudo systemctl stop moosefs-master keepalived
 
 # Attendre 10-15 secondes
 
@@ -821,7 +833,7 @@ sudo tail -20 /var/log/syslog | grep MOOSEFS-HA
 
 ```bash
 # Sur NODE1
-sudo systemctl start moosefs-master
+sudo systemctl start keepalived
 
 # Attendre 10-15 secondes
 
@@ -853,7 +865,7 @@ cat /mnt/moosefs/test.txt
 
 ---
 
-## 📊 Commandes utiles
+## Commandes utiles
 
 ### Monitoring
 
@@ -907,7 +919,7 @@ sudo journalctl -u mtd-rsync -f
 
 ---
 
-## 🐛 Troubleshooting
+## Troubleshooting
 
 ### La VIP ne bascule pas
 
@@ -1032,5 +1044,19 @@ sudo systemctl stop keepalived
 
 # 2. Arrêter tous les masters sauf NODE1
 sudo systemctl stop moosefs-master
+```
 
-#
+---
+
+## Licence
+
+Cette documentation est sous licence [Creative Commons Attribution 4.0 International (CC BY 4.0)](https://creativecommons.org/licenses/by/4.0/deed.fr).
+
+Vous êtes libre de :
+- Partager — copier, distribuer et communiquer le matériel
+- Adapter — remixer, transformer et créer à partir du matériel pour toute utilisation, y compris commerciale
+
+Selon les conditions suivantes :
+- Attribution — Vous devez créditer l'œuvre, intégrer un lien vers la licence et indiquer si des modifications ont été effectuées.
+
+© 2026 Nathaël Polnecq
