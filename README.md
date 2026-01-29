@@ -25,7 +25,6 @@ MooseFS est un système de fichiers distribué tolérant aux pannes qui permet d
 ## 📋 Table des matières
 
 - [Vue d'ensemble](#vue-densemble)
-- [Architecture](#architecture)
 - [Prérequis](#prérequis)
 - [Installation de base](#installation-de-base)
 - [Configuration par nœud](#configuration-par-nœud)
@@ -49,37 +48,6 @@ Ce guide décrit la mise en place d'un cluster MooseFS hautement disponible avec
 - ✅ **IP virtuelle (VIP)** : Point d'accès unique pour les clients
 - ✅ **Synchronisation automatique** : Réplication des métadonnées en temps réel
 - ✅ **Stockage distribué** : Chunks répartis sur les 3 nœuds
-
----
-
-## 🏗️ Architecture
-
-```
-┌─────────────────────────────────────────────────────────────┐
-│                     IP Virtuelle (VIP)                       │
-│                    192.168.25.230                            │
-└─────────────────────────────────────────────────────────────┘
-                            │
-         ┌──────────────────┼──────────────────┐
-         │                  │                  │
-    ┌────▼────┐        ┌────▼────┐       ┌────▼────┐
-    │  NODE1  │        │  NODE2  │       │  NODE3  │
-    │ Master  │        │ Backup  │       │ Backup  │
-    │Priority │        │Priority │       │Priority │
-    │  103    │        │  102    │       │  101    │
-    └─────────┘        └─────────┘       └─────────┘
-    192.168.25.200     192.168.25.210    192.168.25.220
-```
-
-### Composants par nœud
-
-| Service | NODE1 | NODE2 | NODE3 | Description |
-|---------|-------|-------|-------|-------------|
-| **moosefs-master** | ✅ (actif) | ⏸️ (standby) | ⏸️ (standby) | Géré par Keepalived |
-| **moosefs-chunkserver** | ✅ | ✅ | ✅ | Stockage des données |
-| **moosefs-cgiserv** | ✅ | ✅ | ✅ | Interface web |
-| **keepalived** | ✅ | ✅ | ✅ | Gestion HA |
-| **mtd-rsync** | ✅ | ✅ | ✅ | Synchronisation métadonnées |
 
 ---
 
