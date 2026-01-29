@@ -300,13 +300,13 @@ ssh-copy-id root@192.168.25.210
 ssh-copy-id root@192.168.25.220
 ```
 
-#### Script de synchronisation rsync sur les 3 noeuds
-
-### Packet à installer pour vérifier en temp réel :
+### Packet à installer pour vérifier en temp réel les métadonnés :
 
 ```bash
 apt install inotify-tools
 ````
+
+#### Script de synchronisation rsync sur les 3 noeuds
 
 ```bash
 sudo mkdir -p /etc/script
