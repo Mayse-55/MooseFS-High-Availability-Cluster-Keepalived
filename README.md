@@ -182,10 +182,10 @@ Configuration recommandée :
 #### 6.1. Préparation des répertoires de stockage
 
 ```bash
-sudo mkdir -p /mnt/local-mpx/moosefs_chunks
-sudo mkdir -p /mnt/local-mpx/moosefs_data
-sudo chown -R mfs:mfs /mnt/local-mpx/moosefs_chunks
-sudo chmod 755 /mnt/local-mpx/moosefs_chunks
+sudo mkdir -p /mnt/moosefs_chunks
+sudo mkdir -p /mnt/moosefs_data
+sudo chown -R mfs:mfs /mnt/moosefs_chunks
+sudo chmod 755 /mnt/moosefs_chunks
 ```
 
 #### 6.2. Configuration initiale
@@ -219,7 +219,7 @@ sudo nano /etc/mfs/mfshdd.cfg
 Ajouter :
 
 ```bash
-/mnt/local-mpx/moosefs_chunks
+/mnt/moosefs_chunks
 ```
 
 ---
@@ -271,12 +271,18 @@ Ajouter :
 
 ```bash
 # MooseFS - Montage automatique
-mfsmaster:/  /mnt/local-mpx/moosefs_data  moosefs  defaults,mfsdelayedinit,_netdev,nonempty  0 0
+mfsmaster:/  /mnt/moosefs_data  moosefs  defaults,mfsdelayedinit,_netdev,nonempty  0 0
 ```
 
 ---
 
 ## Configuration par nœud
+
+### Packet à installer sur les 3 noeuds :
+
+```bash
+apt install inotify-tools
+````
 
 ### Configuration spécifique à NODE1
 
@@ -300,13 +306,7 @@ ssh-copy-id root@192.168.25.210
 ssh-copy-id root@192.168.25.220
 ```
 
-### Packet à installer pour vérifier en temp réel les métadonnés :
-
-```bash
-apt install inotify-tools
-````
-
-#### Script de synchronisation rsync sur les 3 noeuds
+#### Script de synchronisation rsync 
 
 ```bash
 sudo mkdir -p /etc/script
@@ -337,14 +337,6 @@ done
 EOF
 
 chmod +x /etc/script/mtd-rsync.sh
-```
-
-### Modifié L'ip par rapport au noeud :
-
-```bash
-SRC="/var/lib/mfs"
-DEST1="root@votreip:/var/lib/mfs"
-DEST2="root@votreip:/var/lib/mfs"
 ```
 
 ---
