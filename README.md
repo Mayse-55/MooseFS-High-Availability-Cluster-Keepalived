@@ -154,7 +154,7 @@ sudo apt install -y build-essential libpcap-dev zlib1g-dev libfuse3-dev pkg-conf
 #### 4.2. Paquets MooseFS
 
 ```bash
-sudo apt install -y moosefs-master moosefs-chunkserver moosefs-client moosefs-cgi moosefs-cgiserv moosefs-cli
+sudo apt install -y moosefs-master moosefs-chunkserver moosefs-metalogger moosefs-client moosefs-cgi moosefs-cgiserv moosefs-cli
 ```
 
 #### 4.3. Installation de Keepalived
@@ -729,26 +729,30 @@ EOF
 sudo systemctl start moosefs-master
 sudo systemctl enable moosefs-master
 
-# 2. Démarrer Chunkserver
+# 2. Désactiver MooseFS Metalogger
+sudo systemctl stop moosefs-metalogger
+sudo systemctl disable moosefs-metalogger
+
+# 3. Démarrer Chunkserver
 sudo systemctl start moosefs-chunkserver
 sudo systemctl enable moosefs-chunkserver
 
-# 3. Démarrer CGI
+# 4. Démarrer CGI
 sudo systemctl start moosefs-cgiserv
 sudo systemctl enable moosefs-cgiserv
 
-# 4. Démarrer le service de synchronisation
+# 5. Démarrer le service de synchronisation
 sudo systemctl start mtd-rsync.service
 
-# 5. Démarrer Keepalived
+# 6. Démarrer Keepalived
 sudo systemctl start keepalived
 sudo systemctl enable keepalived
 
-# 6. Vérifier la VIP
+# 7. Vérifier la VIP
 ip a | grep 192.168.25.230
 # ✅ La VIP doit être présente sur NODE1
 
-# 7. Vérifier les services
+# 8. Vérifier les services
 sudo systemctl status moosefs-master
 sudo systemctl status moosefs-chunkserver
 sudo systemctl status keepalived
@@ -762,26 +766,30 @@ sudo systemctl status keepalived
 # 1. S'assurer que le Master est ARRÊTÉ
 sudo systemctl stop moosefs-master
 
-# 2. Démarrer Chunkserver
+# 2. Désactiver MooseFS Metalogger
+sudo systemctl stop moosefs-metalogger
+sudo systemctl disable moosefs-metalogger
+
+# 3. Démarrer Chunkserver
 sudo systemctl start moosefs-chunkserver
 sudo systemctl enable moosefs-chunkserver
 
-# 3. Démarrer CGI
+# 4. Démarrer CGI
 sudo systemctl start moosefs-cgiserv
 sudo systemctl enable moosefs-cgiserv
 
-# 4. Démarrer le service de synchronisation
+# 5. Démarrer le service de synchronisation
 sudo systemctl start mtd-rsync.service
 
-# 5. Démarrer Keepalived
+# 6. Démarrer Keepalived
 sudo systemctl start keepalived
 sudo systemctl enable keepalived
 
-# 6. Vérifier qu'il N'Y A PAS la VIP
+# 7. Vérifier qu'il N'Y A PAS la VIP
 ip a | grep 192.168.25.230
 # ❌ Ne doit RIEN afficher
 
-# 7. Vérifier les services
+# 8. Vérifier les services
 sudo systemctl status moosefs-chunkserver
 sudo systemctl status keepalived
 ```
@@ -794,26 +802,30 @@ sudo systemctl status keepalived
 # 1. S'assurer que le Master est ARRÊTÉ
 sudo systemctl stop moosefs-master
 
-# 2. Démarrer Chunkserver
+# 2. Désactiver MooseFS Metalogger
+sudo systemctl stop moosefs-metalogger
+sudo systemctl disable moosefs-metalogger
+
+# 3. Démarrer Chunkserver
 sudo systemctl start moosefs-chunkserver
 sudo systemctl enable moosefs-chunkserver
 
-# 3. Démarrer CGI
+# 4. Démarrer CGI
 sudo systemctl start moosefs-cgiserv
 sudo systemctl enable moosefs-cgiserv
 
-# 4. Démarrer le service de synchronisation
+# 5. Démarrer le service de synchronisation
 sudo systemctl start mtd-rsync.service
 
-# 5. Démarrer Keepalived
+# 6. Démarrer Keepalived
 sudo systemctl start keepalived
 sudo systemctl enable keepalived
 
-# 6. Vérifier qu'il N'Y A PAS la VIP
+# 7. Vérifier qu'il N'Y A PAS la VIP
 ip a | grep 192.168.25.230
 # ❌ Ne doit RIEN afficher
 
-# 7. Vérifier les services
+# 8. Vérifier les services
 sudo systemctl status moosefs-chunkserver
 sudo systemctl status keepalived
 ```
