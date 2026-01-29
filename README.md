@@ -1013,21 +1013,6 @@ sudo journalctl -u mtd-rsync -n 50
 sudo systemctl restart mtd-rsync
 ```
 
-### Rate limiting SSH
-
-Si vous voyez des erreurs `connections without attempting authentication` :
-
-```bash
-# Arrêter temporairement mtd-rsync
-sudo systemctl stop mtd-rsync
-
-# Attendre 60 secondes
-sleep 60
-
-# Redémarrer proprement
-sudo systemctl start mtd-rsync
-```
-
 ### Split-brain (2 masters actifs)
 
 ```bash
