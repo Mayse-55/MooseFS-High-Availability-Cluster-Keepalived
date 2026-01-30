@@ -1059,16 +1059,6 @@ sudo journalctl -u mtd-rsync -n 50
 sudo systemctl restart mtd-rsync
 ```
 
-### Split-brain (2 masters actifs)
-
-```bash
-# 1. Arrêter Keepalived sur tous les nœuds
-sudo systemctl stop keepalived
-
-# 2. Arrêter tous les masters sauf NODE1
-sudo systemctl stop moosefs-master
-```
-
 ---
 
 ## Limitations / Disclaimer
