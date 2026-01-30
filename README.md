@@ -1065,7 +1065,7 @@ sudo systemctl restart mtd-rsync
 
 - Cette solution n'est **pas officiellement supportée** par MooseFS.
 - Cette documentation est **strictement à but éducatif et expérimental**.
-- **NE PAS utiliser en production** : cette architecture est instable et non éprouvée.
+- **Ne pas utiliser en production** : cette architecture est instable et non éprouvée.
 - Les configurations proposées sont des **tests** réalisés sur **3 machines Proxmox 9.1.4** en cluster sur le **même réseau**.
 - Cette documentation peut ne pas fonctionner chez vous : cela dépend de votre matériel et de vos connaissances.
 - Aucune garantie de stabilité, de performance ou de fiabilité n'est fournie.
